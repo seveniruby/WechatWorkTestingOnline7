@@ -9,8 +9,8 @@ import static io.restassured.RestAssured.given;
 
 public class Department {
 
-    public void create(DepartmentData departmentData){
-        given().contentType(ContentType.JSON)
+    public Response create(DepartmentData departmentData){
+        return given().contentType(ContentType.JSON)
                 .queryParam("access_token", Config.getToken())
                 .body(departmentData)
         .when().log().all().post("https://qyapi.weixin.qq.com/cgi-bin/department/create")
@@ -25,5 +25,13 @@ public class Department {
                 .log().all().get("https://qyapi.weixin.qq.com/cgi-bin/department/list")
         .then().log().all().extract().response();
 
+    }
+
+    public Response delete(String id){
+        return given()
+                .queryParam("access_token", Config.getToken())
+                .queryParam("id", id)
+        .when().log().all().get("https://qyapi.weixin.qq.com/cgi-bin/department/delete")
+        .then().log().all().extract().response();
     }
 }
