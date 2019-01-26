@@ -1,5 +1,6 @@
 package com.testerhome.hogwart.WechatWork.AddressBook;
 
+import com.testerhome.hogwart.WechatWork.BaseTestCase;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -13,7 +14,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.junit.jupiter.api.Assertions.*;
 
-class DepartmentTest {
+class DepartmentTest extends BaseDepartmentTestCase {
 
     Department department=new Department();
     DepartmentData departmentData=new DepartmentData();
