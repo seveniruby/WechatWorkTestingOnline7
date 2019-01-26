@@ -16,22 +16,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DepartmentTest extends BaseDepartmentTestCase {
 
-    Department department=new Department();
-    DepartmentData departmentData=new DepartmentData();
-
     @BeforeEach
     void setUp() {
-        List<String> array=new ArrayList<String>();
-        array.add("霍格沃兹测试学院线上第八期-实战演练");
-        array.add("霍格沃兹测试学院线上第八期");
 
-        for(String name : array) {
-            departmentData.name =name;
-            Integer id = department.list("").path("department.find{it.name=='" + departmentData.name + "'}.id");
-            if (id != null) {
-                department.delete(id.toString()).then().body("errcode", equalTo(0));
-            }
-        }
     }
 
     @ParameterizedTest
