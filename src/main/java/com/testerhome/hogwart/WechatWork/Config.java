@@ -1,6 +1,11 @@
 package com.testerhome.hogwart.WechatWork;
 
-import io.restassured.RestAssured;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+
+import java.io.File;
+import java.io.IOException;
 
 import static io.restassured.RestAssured.given;
 
@@ -16,7 +21,7 @@ public class Config {
     private static Config config;
     public static Config getInstance(){
         if(config==null){
-            config=new Config();
+            load();
         }
         return config;
     }
@@ -32,5 +37,33 @@ public class Config {
             .extract().path("access_token");
         }
         return getInstance().token;
+    }
+
+    public static Config load(String path){
+        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+        Config config = null;
+        try {
+            //config=  mapper.readValue(new File(), Config.class);
+            config = mapper.readValue(Config.class.getResourceAsStream(path), Config.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return config;
+    }
+
+    public static Config load(){
+        config=load("/conf/wechat.yaml");
+        return config;
+
+    }
+
+    public static String export(){
+        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+        try {
+            return mapper.writeValueAsString(getInstance());
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

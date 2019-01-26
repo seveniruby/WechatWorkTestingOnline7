@@ -13,6 +13,19 @@ class ConfigTest {
     void getToken() {
         System.out.println(Config.getToken());
         assertThat(Config.getToken(), not(equalTo("")));
+    }
 
+    @Test
+    void load(){
+        Config.load();
+        System.out.println(Config.getInstance().username);
+
+        assertThat(Config.getInstance().contactSecret, not(equalTo("")));
+        assertThat(Config.getInstance().username, equalTo("seveniruby"));
+    }
+
+    @Test
+    void export(){
+        System.out.println(Config.export());
     }
 }
