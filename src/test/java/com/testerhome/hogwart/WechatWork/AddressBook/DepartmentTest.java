@@ -2,6 +2,9 @@ package com.testerhome.hogwart.WechatWork.AddressBook;
 
 import io.restassured.response.Response;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,26 +33,36 @@ class DepartmentTest {
         }
     }
 
-    @Test
-    void create() {
-        DepartmentData departmentData=new DepartmentData();
-        departmentData.name="霍格沃兹测试学院线上第七期";
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "霍格沃兹测试学院线上第七期",
+            "霍格沃兹测试学院线上第八期",
+            "霍格沃兹测试学院线上第九期",
+            "a",
+            "1",
+            "@"
+    })
+    void create(String name) {
+        departmentData.name=name;
         department.create(departmentData);
 
         Response response=department.list("");
         response.then().statusCode(200);
         response.then().body("errcode", equalTo(0));
         response.then().body("department.size()", greaterThanOrEqualTo(0));
-        response.then().body("department.find{ it.name == '霍格沃兹测试学院线上第七期'}.name", equalTo(departmentData.name));
+        response.then().body("department.find{ it.name == '"+ departmentData.name + "'}.name", equalTo(departmentData.name));
 
     }
 
-    @Test
-    void list() {
-        Response response=department.list("");
+    @ParameterizedTest
+    @CsvFileSource(resources="/data/departmentID.csv")
+    void list(String id, Integer size) {
+        System.out.println("id="+id);
+        System.out.println("size="+size);
+        Response response=department.list(id);
         response.then().statusCode(200);
         response.then().body("errcode", equalTo(0));
-        response.then().body("department.size()", greaterThanOrEqualTo(0));
+        response.then().body("department.size()", greaterThanOrEqualTo(size));
 
     }
 

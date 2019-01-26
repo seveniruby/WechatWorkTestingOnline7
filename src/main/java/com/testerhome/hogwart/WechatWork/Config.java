@@ -27,9 +27,8 @@ public class Config {
     }
 
     public static String getToken(){
-        if(getInstance().token==""){
+        if(getInstance().token.equals("")){
             //todo: get token
-
             getInstance().token=given().queryParam("corpid", Config.getInstance().corpid)
                     .queryParam("corpsecret", Config.getInstance().contactSecret)
             .when().get("https://qyapi.weixin.qq.com/cgi-bin/gettoken")
